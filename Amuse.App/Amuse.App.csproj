@@ -10,6 +10,13 @@
     <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
   </PropertyGroup>
 
+  <!--Local/portable builds must not offer to replace themselves with a published
+      release: that release is built with different (licensed) icon fonts and would
+      silently undo this working tree. Enabled by Scripts\publish-portable.ps1.-->
+  <PropertyGroup Condition="'$(AmuseDisableUpdateCheck)' == 'true'">
+    <DefineConstants>$(DefineConstants);AMUSE_DISABLE_UPDATE_CHECK</DefineConstants>
+  </PropertyGroup>
+
   <!--Projects-->
   <ItemGroup>
     <ProjectReference Include="..\Amuse.Common\Amuse.Common.csproj" />

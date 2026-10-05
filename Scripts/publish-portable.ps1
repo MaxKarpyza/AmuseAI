@@ -157,6 +157,10 @@ $publishArgs = @(
     # contents differ - which leaves e.g. wpfgfx_cor3.dll from .NET 10.0.x next to
     # 10.0.12 managed WPF and crashes at startup with EntryPointNotFoundException.
     '-p:SkipCopyUnchangedFiles=false'
+    # A portable build deployed from a working tree must not offer to replace itself
+    # with a published release: that release carries the licensed icon fonts and
+    # would undo this tree's local changes.
+    '-p:AmuseDisableUpdateCheck=true'
     '-p:DebugType=none'
     '-p:DebugSymbols=false'
     '-m:1'

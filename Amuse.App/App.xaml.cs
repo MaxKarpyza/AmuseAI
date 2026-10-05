@@ -449,13 +449,22 @@ namespace Amuse.App
         {
             try
             {
+#if AMUSE_DISABLE_UPDATE_CHECK
+                // Set by -p:AmuseDisableUpdateCheck=true, which the portable deploy
+                // script passes. A local build must never offer to replace itself with
+                // a published release: that build is built with different icon fonts
+                // and would silently undo this working tree's changes.
+                _settings.IsUpdateAvailable = false;
+                Log.Logger.Information("[CheckForUpdates] - Skipped, update check disabled for this build.");
+                return;
+#else
                 if (_settings.IsAutoUpdateEnabled)
                 {
                     Log.Logger.Information("[CheckForUpdates] - Check for updates...");
                     var updateResponse = await GetUpdateInfo();
                     if (updateResponse is not null)
                     {
-                        _settings.IsUpdateAvailable = updateResponse.Version != AppVersionTag;
+                        _settings.IsUpdateAvailable = AppUpdate.IsNewerThan(updateResponse.Version, AppVersionTag);
                         Log.Logger.Information($"[CheckForUpdates] - Check for updates complete, IsUpdateAvailable: {_settings.IsUpdateAvailable}");
                     }
                     else
@@ -467,6 +476,7 @@ namespace Amuse.App
                 {
                     _settings.IsUpdateAvailable = false;
                 }
+#endif
             }
             catch (Exception ex)
             {
