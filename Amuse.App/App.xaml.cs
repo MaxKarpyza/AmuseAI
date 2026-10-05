@@ -205,7 +205,7 @@ namespace Amuse.App
             // and only stalls the thread it blocks, so the report names the modules
             // loaded into this process to make the stall attributable.
             _uiStallMonitor = new UiStallMonitor(Dispatcher);
-            _uiStallMonitor.Start();
+            _uiStallMonitor.Start(MainWindow);
 
             // Run Migrations
             await migrationService.RunAutoMigrationsAsync();
