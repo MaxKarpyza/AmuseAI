@@ -123,6 +123,11 @@ namespace Amuse.App.Services
         /// </summary>
         private const int RecentMessageCount = 40;
 
+        /// <summary>
+        /// How many probes pass between two refreshes of the process inventory.
+        /// </summary>
+        private const int InventoryIntervalProbes = 120;
+
         private static readonly Dictionary<int, string> _messages = new()
         {
             { 0x0006, "WM_ACTIVATE" },
@@ -165,6 +170,8 @@ namespace Amuse.App.Services
         private long _worstStallMs;
         private long _lastReportTimestamp;
         private long _probeFailures;
+        private string _foreignModules = "(not gathered yet)";
+        private string _childProcesses = "(not gathered yet)";
         private bool _disposed;
 
 
@@ -196,8 +203,15 @@ namespace Amuse.App.Services
             Log.Logger.Information("[UiStallMonitor] Watching UI thread {_uiManagedThreadId} (managed), messages hooked: {Hooked}. Stall threshold: {ThresholdMs} ms, probe interval: {IntervalMs} ms.",
                 _uiManagedThreadId, _source != null, StallThresholdMs, IntervalMs);
             Log.Logger.Information("[UiStallMonitor] Render mode: {RenderMode}.", RenderOptions.ProcessRenderMode);
-            Log.Logger.Information("[UiStallMonitor] Foreign modules in this process: {Modules}", GetForeignModules(Process.GetCurrentProcess().Id));
-            Log.Logger.Information("[UiStallMonitor] Child processes: {Children}", string.Join("; ", GetChildProcesses()));
+
+            // The inventory is gathered in the background: enumerating modules and
+            // asking WMI for children can block, and startup must not wait for it.
+            _ = Task.Run(() =>
+            {
+                RefreshInventory();
+                Log.Logger.Information("[UiStallMonitor] Foreign modules in this process: {Modules}", Volatile.Read(ref _foreignModules));
+                Log.Logger.Information("[UiStallMonitor] Child processes: {Children}", Volatile.Read(ref _childProcesses));
+            });
 
             _ = Task.Run(() => WatchAsync(_cancellation.Token));
         }
@@ -221,7 +235,20 @@ namespace Amuse.App.Services
 
             Log.Logger.Warning("[UiStallMonitor] UI stalls: Count: {Count}, Total: {Total} ms, Worst: {Worst} ms. Foreign modules: {Modules}. Child processes: {Children}.",
                 Volatile.Read(ref _stallCount), Volatile.Read(ref _stallTotalMs), Volatile.Read(ref _worstStallMs),
-                GetForeignModules(Process.GetCurrentProcess().Id), string.Join("; ", GetChildProcesses()));
+                Volatile.Read(ref _foreignModules), Volatile.Read(ref _childProcesses));
+        }
+
+
+        /// <summary>
+        /// Gathers the process inventory into the fields the reports read. Both
+        /// lookups can be slow, so they only ever run off the reporting path.
+        /// </summary>
+        private void RefreshInventory()
+        {
+            var modules = GetForeignModules(Process.GetCurrentProcess().Id);
+            var children = string.Join("; ", GetChildProcesses());
+            Volatile.Write(ref _foreignModules, modules);
+            Volatile.Write(ref _childProcesses, children);
         }
 
 
@@ -244,15 +271,24 @@ namespace Amuse.App.Services
 
 
         /// <summary>
-        /// Probes the UI thread until cancelled.
+        /// Probes the UI thread until cancelled, refreshing the process inventory
+        /// now and then so that a module injected later is still noticed.
         /// </summary>
         private async Task WatchAsync(CancellationToken token)
         {
+            var sinceInventory = 0;
             while (!token.IsCancellationRequested)
             {
                 try
                 {
                     await ProbeAsync(token);
+
+                    // Never inside the stall path: the inventory lookups can block.
+                    if (sinceInventory++ >= InventoryIntervalProbes)
+                    {
+                        sinceInventory = 0;
+                        RefreshInventory();
+                    }
                     await Task.Delay(IntervalMs, token);
                 }
                 catch (OperationCanceledException)
@@ -394,8 +430,14 @@ namespace Amuse.App.Services
 
 
         /// <summary>
-        /// Records a stall and logs everything known about it, unless it is part of a
-        /// burst that was already reported.
+        /// Records a stall and writes the report, unless it is part of a burst that
+        /// was already reported.
+        ///
+        /// The line that carries the evidence is written first and uses only values
+        /// that are already in memory. The process inventory is added afterwards as
+        /// a separate best effort line: enumerating the modules of a process that is
+        /// stuck, and asking WMI for its children, can block for a long time, and a
+        /// stall that is never written down is the one failure this cannot have.
         /// </summary>
         private void Report(long elapsedMs)
         {
@@ -416,14 +458,34 @@ namespace Amuse.App.Services
                 messages = string.Join(" | ", _recent);
             }
 
-            var process = Process.GetCurrentProcess();
-            var wait = GetUiThreadWaitState();
-
-            Log.Logger.Warning("[UiStallMonitor] UI thread blocked for at least {ElapsedMs} ms. Input state before the stall: layout {Layout}, focus {Focus}, UI culture {Culture}. Window messages: {Messages}. UI thread native state: {WaitState}. Stalls so far: {Count} (total {Total} ms, worst {Worst} ms). Foreign modules: {Modules}. Child processes: {Children}. Window messages recorded: {MessageCount}.",
+            Log.Logger.Warning("[UiStallMonitor] UI thread blocked for at least {ElapsedMs} ms. Input state before the stall: layout {Layout}, focus {Focus}, UI culture {Culture}. Window messages: {Messages}. UI thread native state: {WaitState}. Stalls so far: {Count} (total {Total} ms, worst {Worst} ms). Window messages recorded: {MessageCount}.",
                 elapsedMs, _lastLayout ?? "(unknown)", _lastFocus ?? "(unknown)", _lastCulture ?? "(unknown)",
-                messages, wait,
-                Volatile.Read(ref _stallCount), Volatile.Read(ref _stallTotalMs), Volatile.Read(ref _worstStallMs),
-                GetForeignModules(process.Id), string.Join("; ", GetChildProcesses()), messageCount);
+                messages, GetUiThreadWaitState(),
+                Volatile.Read(ref _stallCount), Volatile.Read(ref _stallTotalMs), Volatile.Read(ref _worstStallMs), messageCount);
+
+            LogInventory();
+        }
+
+
+        /// <summary>
+        /// Writes the process inventory, off the reporting path so that a slow lookup
+        /// cannot delay or swallow the stall report.
+        /// </summary>
+        private void LogInventory()
+        {
+            _ = Task.Run(() =>
+            {
+                try
+                {
+                    RefreshInventory();
+                    Log.Logger.Warning("[UiStallMonitor] At the stall, modules loaded from outside the app and system directories: {Modules}. Child processes: {Children}.",
+                        Volatile.Read(ref _foreignModules), Volatile.Read(ref _childProcesses));
+                }
+                catch (Exception e)
+                {
+                    Log.Logger.Debug(e, "[UiStallMonitor] Process inventory unavailable.");
+                }
+            });
         }
 
 
