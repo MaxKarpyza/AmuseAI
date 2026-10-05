@@ -57,7 +57,7 @@ namespace Amuse.App.Services
         {
             public const int GHITHREADINFO = 0;
 
-            [DllImport("user32.dll")]
+            [DllImport("kernel32.dll")]
             public static extern uint GetCurrentThreadId();
 
             [DllImport("user32.dll")]
@@ -141,6 +141,11 @@ namespace Amuse.App.Services
             { 0x031E, "WM_DWMCOMPOSITIONCHANGED" }
         };
 
+        private static readonly HashSet<int> _loggedMessages = new()
+        {
+            0x0006, 0x0007, 0x0008, 0x0050, 0x0051, 0x0281, 0x0283, 0x0284, 0x0285, 0x0286, 0x0287, 0x0288
+        };
+
         private readonly Dispatcher _dispatcher;
         private readonly int _uiManagedThreadId;
         private readonly CancellationTokenSource _cancellation = new();
@@ -155,6 +160,7 @@ namespace Amuse.App.Services
         private long _stallTotalMs;
         private long _worstStallMs;
         private long _lastReportTimestamp;
+        private long _probeFailures;
         private bool _disposed;
 
 
@@ -199,6 +205,10 @@ namespace Amuse.App.Services
         /// </summary>
         public void LogSummary()
         {
+            var failures = Volatile.Read(ref _probeFailures);
+            if (failures > 0)
+                Log.Logger.Warning("[UiStallMonitor] Input sampling failed {Failures} times; the samples below are incomplete.", failures);
+
             if (Volatile.Read(ref _stallCount) == 0)
             {
                 Log.Logger.Information("[UiStallMonitor] No UI stalls detected.");
@@ -247,9 +257,22 @@ namespace Amuse.App.Services
                 }
                 catch (Exception e)
                 {
-                    Log.Logger.Debug(e, "[UiStallMonitor] Probe failed.");
+                    ReportProbeFailure(e);
                 }
             }
+        }
+
+
+        /// <summary>
+        /// Reports a failed probe once. A diagnostic that repeats itself every
+        /// interval can write millions of lines and hang the application it watches,
+        /// so the first failure is logged and the rest are only counted.
+        /// </summary>
+        private void ReportProbeFailure(Exception e)
+        {
+            var count = Interlocked.Increment(ref _probeFailures);
+            if (count == 1)
+                Log.Logger.Warning(e, "[UiStallMonitor] Input sampling failed, further failures will only be counted.");
         }
 
 
@@ -264,8 +287,21 @@ namespace Amuse.App.Services
             var watch = Stopwatch.StartNew();
             await _dispatcher.InvokeAsync(() =>
             {
-                SampleInputState();
-                signal.TrySetResult();
+                // The sample must never be able to fault the dispatcher operation or
+                // leave the signal unset: either would turn a broken diagnostic into a
+                // stall that is not there.
+                try
+                {
+                    SampleInputState();
+                }
+                catch (Exception e)
+                {
+                    ReportProbeFailure(e);
+                }
+                finally
+                {
+                    signal.TrySetResult();
+                }
             }, DispatcherPriority.Background);
             var finished = await Task.WhenAny(signal.Task, Task.Delay(StallThresholdMs, token));
             if (ReferenceEquals(finished, signal.Task))
@@ -339,8 +375,10 @@ namespace Amuse.App.Services
                 {
                     Log.Logger.Information("[UiStallMonitor] {Message} received on the UI thread.", text);
                 }
-                else
+                else if (_loggedMessages.Contains(msg))
                 {
+                    // Keys and characters are kept in the ring for the stall report
+                    // but never logged one by one: a typing session would bury it.
                     Log.Logger.Debug("[UiStallMonitor] {Message}", text);
                 }
             }
