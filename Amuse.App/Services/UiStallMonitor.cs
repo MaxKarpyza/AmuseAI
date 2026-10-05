@@ -80,10 +80,9 @@ namespace Amuse.App.Services
             /// </summary>
             public static string GetLayoutName(IntPtr hkl)
             {
-                const int LOCALE_USERDEFAULT = 0x1000;
                 const int LOCALE_SNAME = 0x0002;
                 var sb = new StringBuilder(16);
-                return GetLocaleInfo((int)hkl, LOCALE_USERDEFAULT | LOCALE_SNAME, sb, sb.Capacity) > 0
+                return GetLocaleInfo(hkl.ToInt32(), LOCALE_SNAME, sb, sb.Capacity) > 0
                     ? sb.ToString()
                     : "unknown";
             }
@@ -154,7 +153,7 @@ namespace Amuse.App.Services
         private uint _uiNativeThreadId;
         private string _lastLayout;
         private string _lastFocus;
-        private string _lastWpfLanguage;
+        private string _lastCulture;
         private HwndSource _source;
         private long _stallCount;
         private long _stallTotalMs;
@@ -342,16 +341,19 @@ namespace Amuse.App.Services
                 focus = $"{cls} (0x{(long)info.hwndFocus:X})";
             }
 
-            var language = Thread.CurrentThread.CurrentUICulture?.Name ?? "(none)";
+            var culture = Thread.CurrentThread.CurrentUICulture?.Name ?? "(none)";
 
-            var changed = layout != _lastLayout || focus != _lastFocus || language != _lastWpfLanguage;
+            var changed = layout != _lastLayout || focus != _lastFocus || culture != _lastCulture;
             _lastLayout = layout;
             _lastFocus = focus;
-            _lastWpfLanguage = language;
+            _lastCulture = culture;
             if (changed)
             {
-                Log.Logger.Information("[UiStallMonitor] Input state: layout {Layout}, focus {Focus}, input language {Language}.",
-                    layout, focus, language);
+                // The culture is reported as a culture, not as an input language: the
+                // thread culture follows the application language and never follows the
+                // keyboard layout, so it must not be read as the latter.
+                Log.Logger.Information("[UiStallMonitor] Input state: layout {Layout}, focus {Focus}, UI culture {Culture}.",
+                    layout, focus, culture);
             }
         }
 
@@ -412,8 +414,8 @@ namespace Amuse.App.Services
             var process = Process.GetCurrentProcess();
             var wait = GetUiThreadWaitState();
 
-            Log.Logger.Warning("[UiStallMonitor] UI thread blocked for at least {ElapsedMs} ms. Input state before the stall: layout {Layout}, focus {Focus}, input language {Language}. Window messages: {Messages}. UI thread native state: {WaitState}. Stalls so far: {Count} (total {Total} ms, worst {Worst} ms). Foreign modules: {Modules}. Child processes: {Children}. Window messages recorded: {MessageCount}.",
-                elapsedMs, _lastLayout ?? "(unknown)", _lastFocus ?? "(unknown)", _lastWpfLanguage ?? "(unknown)",
+            Log.Logger.Warning("[UiStallMonitor] UI thread blocked for at least {ElapsedMs} ms. Input state before the stall: layout {Layout}, focus {Focus}, UI culture {Culture}. Window messages: {Messages}. UI thread native state: {WaitState}. Stalls so far: {Count} (total {Total} ms, worst {Worst} ms). Foreign modules: {Modules}. Child processes: {Children}. Window messages recorded: {MessageCount}.",
+                elapsedMs, _lastLayout ?? "(unknown)", _lastFocus ?? "(unknown)", _lastCulture ?? "(unknown)",
                 messages, wait,
                 Volatile.Read(ref _stallCount), Volatile.Read(ref _stallTotalMs), Volatile.Read(ref _worstStallMs),
                 GetForeignModules(process.Id), string.Join("; ", GetChildProcesses()), messageCount);
