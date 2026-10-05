@@ -440,7 +440,6 @@ namespace Amuse.App.Services
                 {
                     AppDomain.CurrentDomain.BaseDirectory,
                     Environment.GetFolderPath(Environment.SpecialFolder.Windows),
-                    Path.GetDirectoryName(typeof(object).Assembly.Location),
                     RuntimeEnvironment.GetRuntimeDirectory()
                 }.Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
 
