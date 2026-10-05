@@ -2,6 +2,7 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -72,19 +73,23 @@ namespace Amuse.App.Services
             [DllImport("user32.dll", CharSet = CharSet.Unicode)]
             public static extern int GetClassName(IntPtr hwnd, StringBuilder name, int maxCount);
 
-            [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-            public static extern int GetLocaleInfo(int locale, int lcType, StringBuilder data, int count);
-
             /// <summary>
-            /// Names a keyboard layout handle, e.g. 0x04190419 becomes ru-RU.
+            /// Names a keyboard layout handle, e.g. 0x04190419 becomes ru-RU. The high
+            /// word of a layout handle is not a sublanguage code (0x04190419 repeats
+            /// 0x0419 in both halves), so the low word is used as a language id and
+            /// passed to the locale tables rather than to GetLocaleInfo.
             /// </summary>
             public static string GetLayoutName(IntPtr hkl)
             {
-                const int LOCALE_SNAME = 0x0002;
-                var sb = new StringBuilder(16);
-                return GetLocaleInfo(hkl.ToInt32(), LOCALE_SNAME, sb, sb.Capacity) > 0
-                    ? sb.ToString()
-                    : "unknown";
+                try
+                {
+                    var languageId = (int)(hkl.ToInt64() & 0xFFFF);
+                    return new CultureInfo(languageId).Name;
+                }
+                catch (Exception)
+                {
+                    return "unknown";
+                }
             }
         }
 
