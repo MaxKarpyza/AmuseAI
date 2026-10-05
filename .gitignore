@@ -356,3 +356,5 @@ docker-test-output/*
 .tools/
 Scripts/FontCheck/bin/
 Scripts/FontCheck/obj/
+Scripts/VersionCheck/bin/
+Scripts/VersionCheck/obj/

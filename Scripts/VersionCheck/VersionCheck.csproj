@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>VersionCheck</RootNamespace>
+  </PropertyGroup>
+  <!--
+    Tests the real compiled Amuse.App.dll, not a reimplementation: the Python
+    mirror in Scripts\test-version-check.py could drift from the C#.
+    Loaded by reflection so this project does not have to reference every WPF
+    dependency of the app.
+  -->
+</Project>
