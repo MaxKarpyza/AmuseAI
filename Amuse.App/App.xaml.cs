@@ -42,6 +42,7 @@ namespace Amuse.App
         private static string _directoryData;
         private static string _directoryLogs;
         private static IHttpService _httpService;
+        private UiStallMonitor _uiStallMonitor;
         private readonly Settings _settings;
 
         public App()
@@ -199,6 +200,13 @@ namespace Amuse.App
             MainWindow.Show();
             _splashscreen.Close();
 
+            // Watch the UI thread
+            // A frozen window is otherwise invisible: it raises nothing, logs nothing
+            // and only stalls the thread it blocks, so the report names the modules
+            // loaded into this process to make the stall attributable.
+            _uiStallMonitor = new UiStallMonitor(Dispatcher);
+            _uiStallMonitor.Start();
+
             // Run Migrations
             await migrationService.RunAutoMigrationsAsync();
             Log.Logger.Information($"[AppStartup] Application started.");
@@ -211,6 +219,11 @@ namespace Amuse.App
         private async Task AppShutdown()
         {
             Log.Logger.Information($"[AppShutdown] Shutting down application...");
+            // Reported first: from here on the UI thread is busy tearing the
+            // application down, so any stall past this point says nothing.
+            _uiStallMonitor?.LogSummary();
+            _uiStallMonitor?.Dispose();
+            _uiStallMonitor = null;
             using (_appHost)
             {
                 Log.Logger.Information($"[AppShutdown] Deleting Temp Directory.");
