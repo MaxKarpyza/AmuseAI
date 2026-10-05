@@ -213,14 +213,14 @@
                             <!--Timeline Controls-->
                             <UniformGrid DockPanel.Dock="Left" Rows="1">
                                 <Button Command="{Binding TimelineClearCommand}" Width="50" Style="{StaticResource OptionButton}" ToolTip="{CommonControls:Localize ToolTip_VideoTimeline_Clear}" >
-                                    <CommonControls:FontAwesome Icon="e2ab" Size="12" Color="{StaticResource DangerColour}" Opacity=".8"/>
+                                    <CommonControls:FontAwesome Icon="f12a" Size="12" Color="{StaticResource DangerColour}" Opacity=".8"/>
                                 </Button>
                                 <Button Command="{Binding SaveVideoCommand}" Style="{StaticResource OptionButton}" ToolTip="{CommonControls:Localize ToolTip_VideoTimeline_Save}">
                                     <CommonControls:FontAwesome Icon="f0c7" Size="12"/>
                                 </Button>
                                 <TextBox x:Name="ExtendTimelineTextBox" DockPanel.Dock="Right" Text="120" TextAlignment="Center"/>
                                 <Button Command="{Binding TimelineExtendCommand}" CommandParameter="{Binding Text, ElementName=ExtendTimelineTextBox, Converter={StaticResource StringToIntConverter}}" Style="{StaticResource OptionButton}" ToolTip="{CommonControls:Localize ToolTip_VideoTimeline_Extend}">
-                                    <CommonControls:FontAwesome Icon="e6c4" Size="12"/>
+                                    <CommonControls:FontAwesome Icon="f0e2" Size="12"/>
                                 </Button>
                                 <Button Command="{Binding TimelineTrimCommand}" Style="{StaticResource OptionButton}" ToolTip="{CommonControls:Localize ToolTip_VideoTimeline_Trim}">
                                     <CommonControls:FontAwesome Icon="e4ba" Size="12"/>
@@ -242,7 +242,7 @@
                                     <CommonControls:FontAwesome Icon="f03e" Size="12"/>
                                 </Button>
                                 <Button Command="{Binding SegmentSplitCommand}" Style="{StaticResource OptionButton}" ToolTip="{CommonControls:Localize ToolTip_VideoTimeline_SegmentSplit}">
-                                    <CommonControls:FontAwesome Icon="e254" Size="12"/>
+                                    <CommonControls:FontAwesome Icon="f0c4" Size="12"/>
                                 </Button>
                                 <Button Command="{Binding SegmentCopyCommand}" Style="{StaticResource OptionButton}" ToolTip="{CommonControls:Localize ToolTip_VideoTimeline_SegmentCopy}">
                                     <CommonControls:FontAwesome Icon="f0c5" Size="12"/>
@@ -356,7 +356,7 @@
                                                             <!--Audio-->
                                                             <Border>
                                                                 <Viewbox>
-                                                                    <CommonControls:FontAwesome Size="40" Icon="f8f2" IconStyle="SharpSolid" Margin="8" Opacity=".8"/>
+                                                                    <CommonControls:FontAwesome Size="40" Icon="f03d" IconStyle="SharpSolid" Margin="8" Opacity=".8"/>
                                                                 </Viewbox>
                                                                 <Border.Style>
                                                                     <Style TargetType="{x:Type Border}">
@@ -489,12 +489,12 @@
 
                     <!--Placeholder-->
                     <Grid Visibility="{Binding TimelineSegements.Count, Converter={StaticResource LessOrEqualThanToVisibilityConverter}, ConverterParameter=0}">
-                        <CommonControls:FontAwesome Icon="e76b" Size="200" Opacity=".06" Color="{StaticResource DefaultForeground}"/>
+                        <CommonControls:FontAwesome Icon="f078" Size="200" Opacity=".06" Color="{StaticResource DefaultForeground}"/>
                     </Grid>
 
                     <!--DragDrop Notification-->
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding AllowDrop, ElementName=DragDropContainer, Converter={StaticResource BooleanToVisibilityConverter}}" IsHitTestVisible="False">
-                        <CommonControls:FontAwesome Icon="e74c" Size="30" IconStyle="SharpLight" Color="{StaticResource AccentColour2}"/>
+                        <CommonControls:FontAwesome Icon="f01c" Size="30" IconStyle="SharpLight" Color="{StaticResource AccentColour2}"/>
                         <TextBlock Text="{CommonControls:Localize DragDropVideo}" Foreground="{StaticResource AccentColour2}" FontSize="13" FontWeight="DemiBold" Margin="0,6,0,0"/>
                     </StackPanel>
                 </Grid>

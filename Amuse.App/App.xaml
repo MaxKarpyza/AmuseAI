@@ -18,21 +18,14 @@
             <!--TensorStack.WPF-->
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/TensorStack.WPF;component/ThemeDefault.xaml" />
+                <!--Icons:Fonts.Free.xaml by default (Font Awesome Free, no licence needed).
+                     The csproj links Fonts.Free.xaml or Fonts.Pro.xaml to this resource name,
+                     selecting the Pro set with -p:UseFontAwesomePro=true. -->
+                <ResourceDictionary Source="/Amuse;component/Fonts/Fonts.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <!--Images-->
             <BitmapImage x:Key="ImageIcon" UriSource="pack://application:,,,/Amuse;component/Images/Icon.png" />
-
-            <!--Fonts-->
-            <FontFamily x:Key="FontAwesomeBrands">pack://application:,,,/Amuse;component/Fonts/Brands-Regular-400.otf#Font Awesome 7 Brands</FontFamily>
-            <FontFamily x:Key="FontAwesomeLight">pack://application:,,,/Amuse;component/Fonts/Light-300.otf#Font Awesome 7 Pro Light</FontFamily>
-            <FontFamily x:Key="FontAwesomeRegular">pack://application:,,,/Amuse;component/Fonts/Regular-400.otf#Font Awesome 7 Pro</FontFamily>
-            <FontFamily x:Key="FontAwesomeSolid">pack://application:,,,/Amuse;component/Fonts/Solid-900.otf#Font Awesome 7 Pro Solid</FontFamily>
-            <FontFamily x:Key="FontAwesomeThin">pack://application:,,,/Amuse;component/Fonts/Thin-100.otf#Font Awesome 7 Pro Thin</FontFamily>
-            <FontFamily x:Key="FontAwesomeSharpLight">pack://application:,,,/Amuse;component/Fonts/Sharp-Light-300.otf#Font Awesome 7 Sharp Light</FontFamily>
-            <FontFamily x:Key="FontAwesomeSharpRegular">pack://application:,,,/Amuse;component/Fonts/Sharp-Regular-400.otf#Font Awesome 7 Sharp</FontFamily>
-            <FontFamily x:Key="FontAwesomeSharpSolid">pack://application:,,,/Amuse;component/Fonts/Sharp-Solid-900.otf#Font Awesome 7 Sharp Solid</FontFamily>
-            <FontFamily x:Key="FontAwesomeSharpThin">pack://application:,,,/Amuse;component/Fonts/Sharp-Thin-100.otf#Font Awesome 7 Sharp Thin</FontFamily>
 
 
             <!--Amuse-->

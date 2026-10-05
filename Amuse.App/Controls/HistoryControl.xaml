@@ -61,8 +61,8 @@
                         </Border>
                         <Border Width="100" Height="100" Visibility="{Binding MediaType, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Text}" BorderBrush="{StaticResource DefaultBorderColor}" BorderThickness="0,0,0,1">
                             <Grid>
-                                <CommonControls:FontAwesome Icon="f894" IconStyle="Solid" Size="70" Color="{StaticResource DefaultForeground}" Opacity=".2" Visibility="{Binding Source, Converter={StaticResource InverseEnumToVisibilityConverter}, ConverterParameter=TextConverse}"/>
-                                <CommonControls:FontAwesome Icon="e1e7" IconStyle="Regular" Size="70" Color="{StaticResource DefaultForeground}" Opacity=".2" Visibility="{Binding Source, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=TextConverse}"/>
+                                <CommonControls:FontAwesome Icon="f03e" IconStyle="Solid" Size="70" Color="{StaticResource DefaultForeground}" Opacity=".2" Visibility="{Binding Source, Converter={StaticResource InverseEnumToVisibilityConverter}, ConverterParameter=TextConverse}"/>
+                                <CommonControls:FontAwesome Icon="f0e6" IconStyle="Regular" Size="70" Color="{StaticResource DefaultForeground}" Opacity=".2" Visibility="{Binding Source, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=TextConverse}"/>
                             </Grid>
                         </Border>
                         <CommonControls:TransparentImageElement 
@@ -82,7 +82,7 @@
                                 Style="{StaticResource TransparentButton}"
                                 Command="{Binding RemoveItemCommand, RelativeSource={RelativeSource AncestorType=Controls:HistoryControl}}"
                                 CommandParameter="{Binding}">
-                                <CommonControls:FontAwesome Icon="e2b4" IconStyle="Solid" Size="16" Color="{StaticResource DangerColour}"  />
+                                <CommonControls:FontAwesome Icon="f1f8" IconStyle="Solid" Size="16" Color="{StaticResource DangerColour}"  />
                             </Button>
                         </UniformGrid>
                     </Grid>
@@ -208,7 +208,7 @@
                                 Style="{StaticResource TransparentButton}"
                                 Command="{Binding RemoveItemCommand, RelativeSource={RelativeSource AncestorType=Controls:HistoryControl}}"
                                 CommandParameter="{Binding}">
-                                <CommonControls:FontAwesome Icon="e2b4" IconStyle="Solid" Size="16" Color="{StaticResource DangerColour}"  />
+                                <CommonControls:FontAwesome Icon="f1f8" IconStyle="Solid" Size="16" Color="{StaticResource DangerColour}"  />
                             </Button>
                         </UniformGrid>
                     </Grid>
@@ -294,7 +294,7 @@
                                 Style="{StaticResource TransparentButton}"
                                 Command="{Binding RemoveItemCommand, RelativeSource={RelativeSource AncestorType=Controls:HistoryControl}}"
                                 CommandParameter="{Binding}">
-                                <CommonControls:FontAwesome Icon="e2b4" IconStyle="Solid" Size="16" Color="{StaticResource DangerColour}"  />
+                                <CommonControls:FontAwesome Icon="f1f8" IconStyle="Solid" Size="16" Color="{StaticResource DangerColour}"  />
                             </Button>
                         </UniformGrid>
                     </Grid>
@@ -380,7 +380,7 @@
                                 Style="{StaticResource TransparentButton}"
                                 Command="{Binding RemoveItemCommand, RelativeSource={RelativeSource AncestorType=Controls:HistoryControl}}"
                                 CommandParameter="{Binding}">
-                                <CommonControls:FontAwesome Icon="e2b4" IconStyle="Solid" Size="16" Color="{StaticResource DangerColour}"  />
+                                <CommonControls:FontAwesome Icon="f1f8" IconStyle="Solid" Size="16" Color="{StaticResource DangerColour}"  />
                             </Button>
                         </UniformGrid>
                     </Grid>
@@ -461,7 +461,7 @@
                                 Style="{StaticResource TransparentButton}"
                                 Command="{Binding RemoveItemCommand, RelativeSource={RelativeSource AncestorType=Controls:HistoryControl}}"
                                 CommandParameter="{Binding}">
-                                <CommonControls:FontAwesome Icon="e2b4" IconStyle="Solid" Size="16" Color="{StaticResource DangerColour}"  />
+                                <CommonControls:FontAwesome Icon="f1f8" IconStyle="Solid" Size="16" Color="{StaticResource DangerColour}"  />
                             </Button>
                         </UniformGrid>
                     </Grid>
@@ -530,7 +530,7 @@
                     <Grid DockPanel.Dock="Top">
 
                         <Grid Width="100" Height="100">
-                            <CommonControls:FontAwesome Icon="f894" IconStyle="Solid" Size="70" Color="{StaticResource DefaultForeground}" Opacity=".2" />
+                            <CommonControls:FontAwesome Icon="f03e" IconStyle="Solid" Size="70" Color="{StaticResource DefaultForeground}" Opacity=".2" />
                         </Grid>
 
                         <UniformGrid Columns="2" Height="24" VerticalAlignment="Bottom" Visibility="{Binding IsMouseOver, ElementName=Root, Converter={StaticResource BooleanToHiddenConverter}}" Background="#8F000000">
@@ -544,7 +544,7 @@
                                 Style="{StaticResource TransparentButton}"
                                 Command="{Binding RemoveItemCommand, RelativeSource={RelativeSource AncestorType=Controls:HistoryControl}}"
                                 CommandParameter="{Binding}">
-                                <CommonControls:FontAwesome Icon="e2b4" IconStyle="Solid" Size="16" Color="{StaticResource DangerColour}"  />
+                                <CommonControls:FontAwesome Icon="f1f8" IconStyle="Solid" Size="16" Color="{StaticResource DangerColour}"  />
                             </Button>
                         </UniformGrid>
                     </Grid>
@@ -628,7 +628,7 @@
                                 Style="{StaticResource TransparentButton}"
                                 Command="{Binding RemoveItemCommand, RelativeSource={RelativeSource AncestorType=Controls:HistoryControl}}"
                                 CommandParameter="{Binding}">
-                                <CommonControls:FontAwesome Icon="e2b4" IconStyle="Solid" Size="16" Color="{StaticResource DangerColour}"  />
+                                <CommonControls:FontAwesome Icon="f1f8" IconStyle="Solid" Size="16" Color="{StaticResource DangerColour}"  />
                             </Button>
                         </UniformGrid>
                     </Grid>
@@ -712,7 +712,7 @@
                                 Style="{StaticResource TransparentButton}"
                                 Command="{Binding RemoveItemCommand, RelativeSource={RelativeSource AncestorType=Controls:HistoryControl}}"
                                 CommandParameter="{Binding}">
-                                <CommonControls:FontAwesome Icon="e2b4" IconStyle="Solid" Size="16" Color="{StaticResource DangerColour}"  />
+                                <CommonControls:FontAwesome Icon="f1f8" IconStyle="Solid" Size="16" Color="{StaticResource DangerColour}"  />
                             </Button>
                         </UniformGrid>
                     </Grid>

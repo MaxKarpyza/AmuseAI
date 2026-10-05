@@ -64,7 +64,7 @@
                             <CommonControls:IconButton Text="{CommonControls:Localize Create}" FontSize="13" Icon="f0ed" IconSize="14" IconStyle="Light" IconOpacity=".8" IconColor="{StaticResource InfoColour}" Command="{Binding EnvironmentServiceCreateCommand}" Height="40" Alignment="Left" IconMargin="11,0,1,0" />
                             <CommonControls:IconButton Text="{CommonControls:Localize Delete}" FontSize="13" Icon="f2ed" IconSize="14" IconStyle="Light" IconOpacity=".8" IconColor="{StaticResource DangerColour}" Command="{Binding EnvironmentServiceDeleteCommand}" Height="40" Alignment="Left" IconMargin="13,0,1,0" />
                             <CommonControls:IconButton Text="{CommonControls:Localize Update}" FontSize="13" Icon="f01e" IconSize="14" IconStyle="Light" IconOpacity=".8" IconColor="{StaticResource WarningColour}" Command="{Binding EnvironmentServiceUpdateCommand}" Height="40" Alignment="Left" IconMargin="10,0,1,0" />
-                            <CommonControls:IconButton Text="{CommonControls:Localize Rebuild}" FontSize="13" Icon="f361" IconSize="14" IconStyle="Light" IconOpacity=".8" IconColor="{StaticResource WarningColour}" Command="{Binding EnvironmentServiceRebuildCommand}" Height="40" Alignment="Left" IconMargin="9,0,1,0" />
+                            <CommonControls:IconButton Text="{CommonControls:Localize Rebuild}" FontSize="13" Icon="f021" IconSize="14" IconStyle="Light" IconOpacity=".8" IconColor="{StaticResource WarningColour}" Command="{Binding EnvironmentServiceRebuildCommand}" Height="40" Alignment="Left" IconMargin="9,0,1,0" />
                         </UniformGrid>
                     </DockPanel>
 

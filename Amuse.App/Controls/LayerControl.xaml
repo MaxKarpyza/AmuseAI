@@ -24,7 +24,7 @@
             <!--DragDrop Notification-->
             <Grid Visibility="{Binding AllowDrop, ElementName=DragDropContainer, Converter={StaticResource BooleanToVisibilityConverter}}" IsHitTestVisible="False" Background="#B0000000">
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
-                    <CommonControls:FontAwesome Icon="e74c" Size="30" IconStyle="SharpLight" Color="{StaticResource AccentColour2}"/>
+                    <CommonControls:FontAwesome Icon="f01c" Size="30" IconStyle="SharpLight" Color="{StaticResource AccentColour2}"/>
                     <TextBlock Text="{CommonControls:Localize DragDropImage}" Foreground="{StaticResource AccentColour2}" FontSize="13" FontWeight="DemiBold" Margin="0,6,0,0"/>
                 </StackPanel>
             </Grid>

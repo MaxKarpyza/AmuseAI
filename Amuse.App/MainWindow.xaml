@@ -39,7 +39,7 @@
                     <Grid>
                         <Button HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,0" ToolTip="{CommonControls:Localize UpdateAvailable}" Command="{Binding UpdateCommand, Source={x:Static Application.Current}}" Style="{StaticResource TransparentButton}" Visibility="{Binding Settings.IsUpdateAvailable, Converter={StaticResource BooleanToHiddenConverter}}">
                             <StackPanel Orientation="Horizontal" Opacity=".8">
-                                <CommonControls:FontAwesome Icon="f30f" IconStyle="Light" Color="{StaticResource SuccessColour}" Margin="3,0" Size="14" />
+                                <CommonControls:FontAwesome Icon="f0eb" IconStyle="Light" Color="{StaticResource SuccessColour}" Margin="3,0" Size="14" />
                                 <TextBlock Text="{CommonControls:Localize NewVersion}" Foreground="{StaticResource SuccessColour}" Margin="1,0,0,0" FontSize="11"/>
                             </StackPanel>
                         </Button>
@@ -110,7 +110,7 @@
                     </CommonControls:IconButton>
                     <CommonControls:IconButton 
                         Text="{CommonControls:Localize Text}" 
-                        Icon="f893" 
+                        Icon="f031" 
                         IconMargin="0,-2,0,0"
                         IconStyle="Regular"
                         Style="{StaticResource MenuIconButton}"
@@ -120,7 +120,7 @@
                     </CommonControls:IconButton>
                     <CommonControls:IconButton 
                         Text="{CommonControls:Localize Gallery}" 
-                        Icon="e228" 
+                        Icon="f00a" 
                         IconMargin="0,-2,0,0"
                         Style="{StaticResource MenuIconButton}"
                         Command="{Binding NavigateCommand}" 
@@ -252,7 +252,7 @@
                             </CommonControls:IconButton>
                             <CommonControls:IconButton 
                                 Text="{CommonControls:Localize ControlNet}" 
-                                Icon="f78a"
+                                Icon="f542"
                                 IconSize="18"
                                 FontSize="14"
                                 FontWeight="SemiBold"
@@ -300,7 +300,7 @@
                             </CommonControls:IconButton>
                             <CommonControls:IconButton 
                                 Text="{CommonControls:Localize Components}" 
-                                Icon="e479"
+                                Icon="f1b3"
                                 IconSize="18"
                                 FontSize="14"
                                 FontWeight="SemiBold"
@@ -333,7 +333,7 @@
                         <UniformGrid Columns="1" VerticalAlignment="Top" >
                             <CommonControls:IconButton 
                                 Text="{CommonControls:Localize Menu_TextToImage}" 
-                                Icon="f894"
+                                Icon="f0e7"
                                 Style="{StaticResource SubmenuIconButton}"
                                 Command="{Binding NavigateCommand}" 
                                 CommandParameter="{x:Static Views:View.TextToImage}" 
@@ -349,7 +349,7 @@
                             </CommonControls:IconButton>
                             <CommonControls:IconButton 
                                 Text="{CommonControls:Localize Menu_ImageEdit}" 
-                                Icon="f4a4"
+                                Icon="f0ad"
                                 Style="{StaticResource SubmenuIconButton}"
                                 Command="{Binding NavigateCommand}" 
                                 CommandParameter="{x:Static Views:View.ImageEdit}" 
@@ -403,7 +403,7 @@
                         <UniformGrid Columns="1" VerticalAlignment="Top" >
                             <CommonControls:IconButton 
                                 Text="{CommonControls:Localize Menu_TextToVideo}" 
-                                Icon="f894"
+                                Icon="f0e7"
                                 Style="{StaticResource SubmenuIconButton}"
                                 Command="{Binding NavigateCommand}" 
                                 CommandParameter="{x:Static Views:View.TextToVideo}" 
@@ -427,7 +427,7 @@
                             </CommonControls:IconButton>
                             <CommonControls:IconButton 
                                 Text="{CommonControls:Localize Menu_FrameToFrame}" 
-                                Icon="e17a"
+                                Icon="f0e2"
                                 Style="{StaticResource SubmenuIconButton}"
                                 Command="{Binding NavigateCommand}" 
                                 CommandParameter="{x:Static Views:View.FrameToFrame}" 
@@ -451,7 +451,7 @@
                             </CommonControls:IconButton>
                             <CommonControls:IconButton 
                                 Text="{CommonControls:Localize Menu_VideoInterpolate}" 
-                                Icon="e4a2"
+                                Icon="f0ec"
                                 Style="{StaticResource SubmenuIconButton}"
                                 Command="{Binding NavigateCommand}" 
                                 CommandParameter="{x:Static Views:View.VideoInterpolate}" 
@@ -474,7 +474,7 @@
                         <UniformGrid Columns="1" VerticalAlignment="Top" >
                             <CommonControls:IconButton 
                                 Text="{CommonControls:Localize Menu_TextToMusic}" 
-                                Icon="f8c9"
+                                Icon="f0c9"
                                 Style="{StaticResource SubmenuIconButton}"
                                 Command="{Binding NavigateCommand}" 
                                 CommandParameter="{x:Static Views:View.TextToMusic}" 
@@ -482,7 +482,7 @@
                             </CommonControls:IconButton>
                             <CommonControls:IconButton 
                                 Text="{CommonControls:Localize Menu_TextToAudio}" 
-                                Icon="f894"
+                                Icon="f0e7"
                                 Style="{StaticResource SubmenuIconButton}"
                                 Command="{Binding NavigateCommand}" 
                                 CommandParameter="{x:Static Views:View.TextToAudio}" 
@@ -513,7 +513,7 @@
                             </CommonControls:IconButton>
                             <CommonControls:IconButton 
                                 Text="{CommonControls:Localize Menu_TextInstruct}" 
-                                Icon="e1e3"
+                                Icon="f0ae"
                                 Style="{StaticResource SubmenuIconButton}"
                                 Command="{Binding NavigateCommand}" 
                                 CommandParameter="{x:Static Views:View.TextInstruct}" 
@@ -521,7 +521,7 @@
                             </CommonControls:IconButton>
                             <CommonControls:IconButton 
                                 Text="{CommonControls:Localize Menu_TextConverse}" 
-                                Icon="e1e7"
+                                Icon="f0e6"
                                 Style="{StaticResource SubmenuIconButton}"
                                 Command="{Binding NavigateCommand}" 
                                 CommandParameter="{x:Static Views:View.TextConverse}" 

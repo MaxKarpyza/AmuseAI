@@ -42,7 +42,7 @@
                         CommandParameter="{StaticResource False}"
                         Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}, Mode=OneWay}" 
                         Visibility="{Binding IsSaveEnabled, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}" >
-                        <CommonControls:FontAwesome Icon="e8c6" />
+                        <CommonControls:FontAwesome Icon="f0c5" />
                     </Button>
                     <Button 
                         ToolTip="{CommonControls:Localize ToolTip_Text_CopyResponseHtml}" 
@@ -52,7 +52,7 @@
                         CommandParameter="{StaticResource True}"
                         Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}, Mode=OneWay}" 
                         Visibility="{Binding IsSaveEnabled, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}" >
-                        <CommonControls:FontAwesome Icon="e83d" />
+                        <CommonControls:FontAwesome Icon="f0c7" />
                     </Button>
                 </StackPanel>
 
@@ -130,7 +130,7 @@
                         <TextBlock />
                         <CommonControls:IconButton
                             Width="30"
-                            Icon="f4a7"
+                            Icon="f3e0"
                             IconSize="11"
                             IconColor="#80FFFFFF"
                             ToolTip="{CommonControls:Localize ToolTip_Text_Rewind}"
@@ -139,7 +139,7 @@
                             Command="{Binding RewindConversationCommand}"/>
                         <CommonControls:IconButton
                             Width="30"
-                            Icon="e1dd"
+                            Icon="f126"
                             IconSize="11"
                             IconColor="#80FFFFFF"
                             ToolTip="{CommonControls:Localize ToolTip_Text_Branch}"
@@ -179,7 +179,7 @@
 
                     <!--DragDrop Notification-->
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding AllowDrop, ElementName=DragDropContainer, Converter={StaticResource BooleanToVisibilityConverter}}" IsHitTestVisible="False">
-                        <CommonControls:FontAwesome Icon="e74c" Size="30" IconStyle="SharpLight" Color="{StaticResource AccentColour2}"/>
+                        <CommonControls:FontAwesome Icon="f01c" Size="30" IconStyle="SharpLight" Color="{StaticResource AccentColour2}"/>
                         <TextBlock Text="{CommonControls:Localize DragDropConversation}" Foreground="{StaticResource AccentColour2}" FontSize="13" FontWeight="DemiBold" Margin="0,6,0,0"/>
                     </StackPanel>
 

@@ -42,7 +42,7 @@
                         CommandParameter="{StaticResource False}"
                         Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}, Mode=OneWay}" 
                         Visibility="{Binding IsSaveEnabled, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}" >
-                        <CommonControls:FontAwesome Icon="e8c6" />
+                        <CommonControls:FontAwesome Icon="f0c5" />
                     </Button>
                     <Button 
                         ToolTip="{CommonControls:Localize ToolTip_Text_CopyResponseHtml}" 
@@ -52,7 +52,7 @@
                         CommandParameter="{StaticResource True}"
                         Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}, Mode=OneWay}" 
                         Visibility="{Binding IsSaveEnabled, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}" >
-                        <CommonControls:FontAwesome Icon="e83d" />
+                        <CommonControls:FontAwesome Icon="f0c7" />
                     </Button>
                 </StackPanel>
 

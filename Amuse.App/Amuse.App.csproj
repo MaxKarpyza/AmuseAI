@@ -61,6 +61,15 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Reference>
   </ItemGroup>
+  <!--ExcludeFromSingleFile is not honoured on Reference items, so a single-file
+      publish would swallow CSnakes.Runtime.dll into Amuse.exe. Python.NET loads it
+      from disk, so the copy is declared explicitly to keep it next to the exe.-->
+  <ItemGroup Condition="'$(PublishSingleFile)' == 'true'">
+    <Content Include="CSnakes.Runtime.dll" ExcludeFromSingleFile="true">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="OnnxStack.Adapter.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -83,17 +92,41 @@
     <Resource Include="Images\Splash_Logo.png" />
   </ItemGroup>  
 
-  <!--Fonts-->
-  <ItemGroup Condition="Exists('Fonts\Brands-Regular-400.otf')">
-    <Resource Include="Fonts\Brands-Regular-400.otf" />
-    <Resource Include="Fonts\Light-300.otf" />
-    <Resource Include="Fonts\Regular-400.otf" />
-    <Resource Include="Fonts\Sharp-Light-300.otf" />
-    <Resource Include="Fonts\Sharp-Regular-400.otf" />
-    <Resource Include="Fonts\Sharp-Solid-900.otf" />
-    <Resource Include="Fonts\Sharp-Thin-100.otf" />
-    <Resource Include="Fonts\Solid-900.otf" />
-    <Resource Include="Fonts\Thin-100.otf" />
+  <!--Icons-->
+  <!--Font Awesome Free 7 (CC BY 4.0) ships in the repository, so a plain build needs
+      no paid assets. One dictionary is linked to the stable resource name Fonts/Fonts.xaml
+      that App.xaml merges; the Pro variant is selected with -p:UseFontAwesomePro=true.-->
+  <PropertyGroup>
+    <AmuseIconsDictionary Condition="'$(AmuseIconsDictionary)' == ''">Fonts\Fonts.Free.xaml</AmuseIconsDictionary>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(UseFontAwesomePro)' == 'true'">
+    <AmuseIconsDictionary>Fonts\Fonts.Pro.xaml</AmuseIconsDictionary>
+  </PropertyGroup>
+  <ItemGroup>
+    <Page Remove="Fonts\Fonts.Free.xaml" />
+    <Page Remove="Fonts\Fonts.Pro.xaml" />
+    <Page Include="$(AmuseIconsDictionary)" Link="Fonts\Fonts.xaml" />
+  </ItemGroup>
+
+  <!--Icons:Font Awesome Free, always bundled-->
+  <ItemGroup>
+    <Resource Include="Fonts\Free\FontAwesome-Free-Brands-Regular-400.otf" />
+    <Resource Include="Fonts\Free\FontAwesome-Free-Regular-400.otf" />
+    <Resource Include="Fonts\Free\FontAwesome-Free-Solid-900.otf" />
+  </ItemGroup>
+
+  <!--Icons:optional commercial Font Awesome Pro set. Ignored unless UseFontAwesomePro=true,
+      so a missing licence never breaks the build.-->
+  <ItemGroup Condition="'$(UseFontAwesomePro)' == 'true'">
+    <Resource Include="Fonts\Brands-Regular-400.otf" ExcludeFromSingleFile="true" Condition="Exists('Fonts\Brands-Regular-400.otf')" />
+    <Resource Include="Fonts\Light-300.otf" ExcludeFromSingleFile="true" Condition="Exists('Fonts\Light-300.otf')" />
+    <Resource Include="Fonts\Regular-400.otf" ExcludeFromSingleFile="true" Condition="Exists('Fonts\Regular-400.otf')" />
+    <Resource Include="Fonts\Sharp-Light-300.otf" ExcludeFromSingleFile="true" Condition="Exists('Fonts\Sharp-Light-300.otf')" />
+    <Resource Include="Fonts\Sharp-Regular-400.otf" ExcludeFromSingleFile="true" Condition="Exists('Fonts\Sharp-Regular-400.otf')" />
+    <Resource Include="Fonts\Sharp-Solid-900.otf" ExcludeFromSingleFile="true" Condition="Exists('Fonts\Sharp-Solid-900.otf')" />
+    <Resource Include="Fonts\Sharp-Thin-100.otf" ExcludeFromSingleFile="true" Condition="Exists('Fonts\Sharp-Thin-100.otf')" />
+    <Resource Include="Fonts\Solid-900.otf" ExcludeFromSingleFile="true" Condition="Exists('Fonts\Solid-900.otf')" />
+    <Resource Include="Fonts\Thin-100.otf" ExcludeFromSingleFile="true" Condition="Exists('Fonts\Thin-100.otf')" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Resources\AppDefault.Designer.cs">
@@ -128,24 +161,34 @@
   </ItemGroup>
 
   <!--Settings-->
+  <!--Preview models. CopyToPublishDirectory is set explicitly: with only
+      CopyToOutputDirectory the SDK may treat these as already up to date on an
+      incremental build and leave them out of the publish manifest, so a deploy
+      into an existing folder intermittently lost the 61 MB payload.-->
   <ItemGroup>
     <None Update="Plugins\Preview\Flux1.onnx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
     </None>
     <None Update="Plugins\Preview\Flux2.onnx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
     </None>
     <None Update="Plugins\Preview\Qwen.onnx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
     </None>
     <None Update="Plugins\Preview\StableDiffusion.onnx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
     </None>
     <None Update="Plugins\Preview\StableDiffusion3.onnx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
     </None>
     <None Update="Plugins\Preview\StableDiffusionXL.onnx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
     </None>
     <None Update="Settings.default.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -158,7 +158,7 @@
                                         <DockPanel Height="80">
                                             <Grid DockPanel.Dock="Left" Width="80" Height="80" Margin="4,0,0,0" >
                                                 <Grid Visibility="{Binding MediaType, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Text}" >
-                                                    <CommonControls:FontAwesome Icon="f893" IconStyle="SharpSolid" Size="80" Color="{StaticResource DefaultForeground}" Opacity=".2" />
+                                                    <CommonControls:FontAwesome Icon="f031" IconStyle="SharpSolid" Size="80" Color="{StaticResource DefaultForeground}" Opacity=".2" />
                                                 </Grid>
                                             </Grid>
                                             <TextBlock DockPanel.Dock="Bottom" Text="{Binding Name}" FontSize="13" FontWeight="DemiBold" TextWrapping="Wrap" Margin="4,0,0,10"/>
@@ -193,7 +193,7 @@
                                     <Grid>
                                         <DockPanel Height="80">
                                             <Grid DockPanel.Dock="Left" Width="80" Height="80" Margin="4,0,0,0">
-                                                <CommonControls:FontAwesome Icon="f78a" IconStyle="SharpLight" Size="60" Color="{StaticResource DefaultForeground}" Opacity=".2" />
+                                                <CommonControls:FontAwesome Icon="f542" IconStyle="SharpLight" Size="60" Color="{StaticResource DefaultForeground}" Opacity=".2" />
                                             </Grid>
                                             <TextBlock DockPanel.Dock="Bottom" Text="{Binding Name}" FontSize="13" FontWeight="DemiBold" TextWrapping="Wrap" Margin="4,0,0,10" />
                                             <StackPanel Margin="4,6,0,0" Opacity=".7">
@@ -244,7 +244,7 @@
                                     <Grid>
                                         <DockPanel Height="80">
                                             <Grid DockPanel.Dock="Left" Width="80" Height="80" Margin="4,0,0,0">
-                                                <CommonControls:FontAwesome Icon="e479" IconStyle="SharpLight" Size="78" Color="{StaticResource DefaultForeground}" Opacity=".2" />
+                                                <CommonControls:FontAwesome Icon="f1b3" IconStyle="SharpLight" Size="78" Color="{StaticResource DefaultForeground}" Opacity=".2" />
                                             </Grid>
                                             <TextBlock DockPanel.Dock="Bottom" Text="{Binding Name}" FontSize="13" FontWeight="DemiBold" TextWrapping="Wrap" Margin="4,0,0,10"/>
                                             <StackPanel Margin="4,6,0,0" Opacity=".7">

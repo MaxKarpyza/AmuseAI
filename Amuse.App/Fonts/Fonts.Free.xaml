@@ -1,0 +1,56 @@
+<!--
+  Icon fonts: Font Awesome 7 FREE (CC BY 4.0) - the default, fully redistributable set.
+
+  Why this file exists
+  ====================
+  Amuse's UI references nine Font Awesome styles, but six of them (Light, Thin and
+  the whole Sharp family) ship only in the commercial Font Awesome Pro package.
+  App.xaml pointed every style at a Pro font file, so a local build without a Pro
+  licence produced an app whose icons silently failed to resolve.
+
+  This dictionary defines all nine style keys from the three FREE font files, so the
+  solution builds and runs with no paid assets.
+
+  Style fallback
+  ==============
+  Font Awesome assigns one codepoint per icon, shared by every family and style, so
+  a style can be served by a different weight without changing the glyph. The free
+  set only has three faces, and Free Regular covers just a small legacy subset, so
+  nearly all codepoints this app uses exist only in Free Solid:
+
+      style                       -> rendered with
+      ==========================================================
+      Solid                       -> Free Solid 900   (exact)
+      Brands                      -> Free Brands 400  (exact)
+      Light, Thin                 -> Free Solid 900
+      Sharp Solid                 -> Free Solid 900   (exact)
+      Sharp Light/Regular/Thin    -> Free Solid 900
+
+  Verified with Scripts/verify-fonts.ps1: all 324 icon usages resolve, none blank.
+  The visible cost is that icons authored in Light/Thin render at Solid weight,
+  i.e. slightly bolder than the Pro build.
+
+  The three OTFs carry patched name IDs so each face has a unique family name;
+  stock Font Awesome declares "Font Awesome 7 Free" for both Solid and Regular, and
+  WPF resolves by that name. See Scripts/patch-font-names.py.
+
+  To build with the real Pro fonts instead, drop the nine licensed .otf files into
+  this folder and pass -p:UseFontAwesomePro=true; Fonts.Pro.xaml is then used.
+-->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--Free Solid 900: serves every style except Brands-->
+    <FontFamily x:Key="FontAwesomeSolid">pack://application:,,,/Amuse;component/Fonts/Free/FontAwesome-Free-Solid-900.otf#Font Awesome 7 Free Solid</FontFamily>
+    <FontFamily x:Key="FontAwesomeLight">pack://application:,,,/Amuse;component/Fonts/Free/FontAwesome-Free-Solid-900.otf#Font Awesome 7 Free Solid</FontFamily>
+    <FontFamily x:Key="FontAwesomeThin">pack://application:,,,/Amuse;component/Fonts/Free/FontAwesome-Free-Solid-900.otf#Font Awesome 7 Free Solid</FontFamily>
+    <FontFamily x:Key="FontAwesomeRegular">pack://application:,,,/Amuse;component/Fonts/Free/FontAwesome-Free-Solid-900.otf#Font Awesome 7 Free Solid</FontFamily>
+    <FontFamily x:Key="FontAwesomeSharpLight">pack://application:,,,/Amuse;component/Fonts/Free/FontAwesome-Free-Solid-900.otf#Font Awesome 7 Free Solid</FontFamily>
+    <FontFamily x:Key="FontAwesomeSharpRegular">pack://application:,,,/Amuse;component/Fonts/Free/FontAwesome-Free-Solid-900.otf#Font Awesome 7 Free Solid</FontFamily>
+    <FontFamily x:Key="FontAwesomeSharpSolid">pack://application:,,,/Amuse;component/Fonts/Free/FontAwesome-Free-Solid-900.otf#Font Awesome 7 Free Solid</FontFamily>
+    <FontFamily x:Key="FontAwesomeSharpThin">pack://application:,,,/Amuse;component/Fonts/Free/FontAwesome-Free-Solid-900.otf#Font Awesome 7 Free Solid</FontFamily>
+
+    <!--Free Brands 400-->
+    <FontFamily x:Key="FontAwesomeBrands">pack://application:,,,/Amuse;component/Fonts/Free/FontAwesome-Free-Brands-Regular-400.otf#Font Awesome 7 Brands Regular</FontFamily>
+
+</ResourceDictionary>

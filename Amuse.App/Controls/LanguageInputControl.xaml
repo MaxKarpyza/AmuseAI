@@ -206,7 +206,7 @@
             <TabItem Style="{StaticResource DiffusionInputTab}" Visibility="{Binding ViewType, Converter={StaticResource InverseEnumToVisibilityConverter}, ConverterParameter=TextConverse}">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal" Margin="3">
-                        <CommonControls:FontAwesome Icon="e0b6" IconStyle="Solid" Color="{StaticResource AccentColour2}" Size="12"/>
+                        <CommonControls:FontAwesome Icon="f544" IconStyle="Solid" Color="{StaticResource AccentColour2}" Size="12"/>
                         <TextBlock Text="{CommonControls:Localize Automation}" FontSize="11" FontWeight="DemiBold" Opacity=".9" Margin="5,0,0,0"/>
                     </StackPanel>
                 </TabItem.Header>

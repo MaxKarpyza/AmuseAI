@@ -93,7 +93,7 @@
                                                     <CommonControls:FontAwesome Icon="f001" IconStyle="Solid" Size="96" Color="{StaticResource DefaultForeground}" Opacity=".2" />
                                                 </Grid>
                                                 <Grid Width="120" Height="120" Visibility="{Binding MediaType, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Text}">
-                                                    <CommonControls:FontAwesome Icon="f894" IconStyle="Solid" Size="96" Color="{StaticResource DefaultForeground}" Opacity=".2" />
+                                                    <CommonControls:FontAwesome Icon="f03e" IconStyle="Solid" Size="96" Color="{StaticResource DefaultForeground}" Opacity=".2" />
                                                 </Grid>
                                                 <CommonControls:TransparentImageElement 
                                                     Height="120" 
@@ -210,7 +210,7 @@
                                     <DataTemplate DataType="{x:Type Common:TextHistory}">
                                         <DockPanel Margin="3" Visibility="{Binding MediaType, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Text}">
                                             <Grid DockPanel.Dock="Top">
-                                                <CommonControls:FontAwesome Icon="f894" IconStyle="Solid" Size="96" Color="{StaticResource DefaultForeground}" Opacity=".2" Width="120" Height="120" />
+                                                <CommonControls:FontAwesome Icon="f03e" IconStyle="Solid" Size="96" Color="{StaticResource DefaultForeground}" Opacity=".2" Width="120" Height="120" />
                                             </Grid>
                                             <StackPanel Margin="0,3,0,0">
                                                 <TextBlock TextAlignment="Center" LineHeight="14" LineStackingStrategy="BlockLineHeight">

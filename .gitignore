@@ -346,3 +346,13 @@ site/
 docker-test-output/*
 
 *.otf
+# ...except the Font Awesome Free icons bundled into the app (CC BY 4.0).
+# Without these the solution cannot build, so they are part of the repository.
+# The commercial Font Awesome Pro files stay ignored on purpose - they are licensed.
+!Amuse.App/Fonts/Free/*.otf
+
+# Local scratch: downloaded font packages, ad-hoc audits, build output of the
+# icon verification harness in Scripts/FontCheck.
+.tools/
+Scripts/FontCheck/bin/
+Scripts/FontCheck/obj/
