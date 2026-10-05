@@ -73,6 +73,9 @@ namespace Amuse.App.Services
             [DllImport("user32.dll", CharSet = CharSet.Unicode)]
             public static extern int GetClassName(IntPtr hwnd, StringBuilder name, int maxCount);
 
+            [DllImport("user32.dll")]
+            public static extern IntPtr ActivateKeyboardLayout(IntPtr hkl, uint flags);
+
             /// <summary>
             /// Names a keyboard layout handle, e.g. 0x04190419 becomes ru-RU. The high
             /// word of a layout handle is not a sublanguage code (0x04190419 repeats
@@ -325,7 +328,7 @@ namespace Amuse.App.Services
         {
             var signal = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
             var watch = Stopwatch.StartNew();
-            await _dispatcher.InvokeAsync(() =>
+            _ = _dispatcher.InvokeAsync(() =>
             {
                 // The sample must never be able to fault the dispatcher operation or
                 // leave the signal unset: either would turn a broken diagnostic into a
@@ -343,6 +346,7 @@ namespace Amuse.App.Services
                     signal.TrySetResult();
                 }
             }, DispatcherPriority.Background);
+
             var finished = await Task.WhenAny(signal.Task, Task.Delay(StallThresholdMs, token));
             if (ReferenceEquals(finished, signal.Task))
             {
@@ -357,6 +361,17 @@ namespace Amuse.App.Services
             // The callback is still queued, so the UI thread has been busy for at
             // least as long as the delay we just waited out.
             Report(watch.ElapsedMilliseconds);
+
+            while (!token.IsCancellationRequested && !signal.Task.IsCompleted)
+            {
+                await Task.WhenAny(signal.Task, Task.Delay(IntervalMs, token));
+                if (signal.Task.IsCompleted)
+                    break;
+                Report(watch.ElapsedMilliseconds);
+            }
+
+            watch.Stop();
+            Log.Logger.Information("[UiStallMonitor] UI thread unblocked after {ElapsedMs} ms.", watch.ElapsedMilliseconds);
         }
 
 
@@ -425,6 +440,35 @@ namespace Amuse.App.Services
                     Log.Logger.Debug("[UiStallMonitor] {Message}", text);
                 }
             }
+
+            // Intercept WM_INPUTLANGCHANGEREQUEST (0x0050).
+            // When an external layout switcher (like Punto Switcher) or Windows requests a layout change,
+            // passing this message to DefWindowProc causes xxxRealDefWindowProc to call ActivateKeyboardLayout
+            // with KLF_SETFORPROCESS, which synchronously broadcasts WM_INPUTLANGCHANGE via SendMessage to
+            // all threads in the process. Combined with external SendMessage callers and injected hooks
+            // (e.g. PSHook64.dll), this causes a classic cross-process deadlock.
+            // By handling it here and activating the layout asynchronously on our dispatcher, we:
+            // 1. Immediately return (IntPtr)1 to unblock the caller's SendMessage.
+            // 2. Prevent DefWindowProc from performing a blocking process-wide broadcast.
+            // 3. Switch the layout safely for this UI thread.
+            if (msg == 0x0050)
+            {
+                handled = true;
+                var targetHkl = lParam;
+                _ = _dispatcher.InvokeAsync(() =>
+                {
+                    try
+                    {
+                        Native.ActivateKeyboardLayout(targetHkl, 0);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Logger.Warning(ex, "[UiStallMonitor] Failed to activate keyboard layout {Hkl}.", targetHkl);
+                    }
+                }, DispatcherPriority.Input);
+                return (IntPtr)1;
+            }
+
             return IntPtr.Zero;
         }
 

@@ -1,4 +1,4 @@
-﻿using Amuse.App.Dialogs;
+using Amuse.App.Dialogs;
 using Amuse.App.Resources;
 using Amuse.App.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,6 +47,7 @@ namespace Amuse.App
 
         public App()
         {
+            AppContext.SetSwitch("Switch.System.Windows.Input.Stylus.DisableStylusAndTouchSupport", true);
             _cancellationTokenSource = new CancellationTokenSource();
             _appMutex = new Mutex(false, "Global\\TensorStack_Amuse", out bool isNewInstance);
             if (!isNewInstance)
